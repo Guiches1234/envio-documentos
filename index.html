@@ -1,66 +1,247 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Envio de Documentos</title>
 
 <style>
-body{
-    font-family: Arial, sans-serif;
-    text-align:center;
-    padding:40px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-.container{
-    max-width:500px;
-    margin:auto;
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg, #0b5ed7, #198754);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-button{
-    width:100%;
-    padding:15px;
-    margin-top:10px;
-    font-size:18px;
+.card {
+  width: 100%;
+  max-width: 440px;
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 28px;
+  box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+}
+
+.badge {
+  background: #eef4ff;
+  color: #0b5ed7;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+h1 {
+  font-size: 28px;
+  color: #1f2937;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #5f6b7a;
+  font-size: 15px;
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+select {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #cfd7e3;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-bottom: 16px;
+  background: white;
+}
+
+.email-box {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  border-radius: 12px;
+  text-align: center;
+  color: #111827;
+  font-weight: bold;
+  word-break: break-word;
+  margin-bottom: 16px;
+}
+
+.instructions {
+  background: #fff8e6;
+  border-left: 4px solid #f0b429;
+  padding: 12px;
+  border-radius: 10px;
+  color: #5f4700;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 18px;
+}
+
+button {
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-primary {
+  background: #0b5ed7;
+  color: white;
+}
+
+.btn-secondary {
+  background: #198754;
+  color: white;
+}
+
+.status {
+  margin-top: 16px;
+  text-align: center;
+  font-weight: bold;
+  color: #198754;
+  min-height: 22px;
+}
+
+.footer {
+  margin-top: 18px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 22px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  button {
+    font-size: 16px;
+  }
 }
 </style>
 </head>
+
 <body>
 
-<div class="container">
+<main class="card">
+  <span class="badge">Atendimento Detran</span>
 
-<h1>Envio de Documentos</h1>
+  <h1>Envio de Documentos</h1>
 
-<p><strong>João Costa</strong></p>
+  <p class="subtitle">
+    Selecione o atendente, envie o documento pelo seu aplicativo de e-mail
+    ou copie o endereço manualmente.
+  </p>
 
-<p id="email">
-joao.costa@detran.ce.gov.br
-</p>
+  <label for="atendente">Atendente</label>
 
-<button onclick="copiarEmail()">
-Copiar E-mail
-</button>
+  <select id="atendente" onchange="atualizarAtendente()">
+    <option value="joao">Guichê 1 - João Costa</option>
+    <option value="luciana">Guichê 2 - Luciana Andrade</option>
+    <option value="jose">Guichê 3 - José Albano</option>
+    <option value="elda">Guichê 4 - Elda Nascimento</option>
+  </select>
 
-<button onclick="abrirEmail()">
-Enviar Documento
-</button>
+  <div class="email-box" id="emailBox">
+    joao.costa@detran.ce.gov.br
+  </div>
 
-</div>
+  <div class="instructions">
+    1. Clique em <strong>Enviar Documento</strong>.<br>
+    2. Anexe a CNH, RG ou documento solicitado.<br>
+    3. Confira o destinatário e clique em enviar.
+  </div>
+
+  <button class="btn-primary" onclick="abrirEmail()">
+    📧 Enviar Documento
+  </button>
+
+  <button class="btn-secondary" onclick="copiarEmail()">
+    📋 Copiar E-mail
+  </button>
+
+  <div class="status" id="status"></div>
+
+  <div class="footer">
+    Este site não armazena documentos. O envio é feito pelo aplicativo de e-mail do usuário.
+  </div>
+</main>
 
 <script>
+const atendentes = {
+  joao: {
+    nome: "João Costa",
+    email: "joao.costa@detran.ce.gov.br"
+  },
+  luciana: {
+    nome: "Luciana Andrade",
+    email: "luciana.andrade@detran.ce.gov.br"
+  },
+  jose: {
+    nome: "José Albano",
+    email: "jose.albano@detran.ce.gov.br"
+  },
+  elda: {
+    nome: "Elda Nascimento",
+    email: "elda.nascimento@detran.ce.gov.br"
+  }
+};
 
-function copiarEmail(){
-    navigator.clipboard.writeText(
-        "joao.costa@detran.ce.gov.br"
-    );
-    alert("E-mail copiado!");
+let emailAtual = atendentes.joao.email;
+
+function atualizarAtendente() {
+  const selecionado = document.getElementById("atendente").value;
+  emailAtual = atendentes[selecionado].email;
+
+  document.getElementById("emailBox").textContent = emailAtual;
+  document.getElementById("status").textContent = "";
 }
 
-function abrirEmail(){
-    window.location.href =
-    "mailto:joao.costa@detran.ce.gov.br?subject=Documentação";
+function abrirEmail() {
+  const assunto = encodeURIComponent("Documentação - Atendimento");
+  const corpo = encodeURIComponent(
+    "Olá, segue em anexo a documentação solicitada."
+  );
+
+  window.location.href =
+    `mailto:${emailAtual}?subject=${assunto}&body=${corpo}`;
 }
 
+function copiarEmail() {
+  navigator.clipboard.writeText(emailAtual).then(() => {
+    document.getElementById("status").textContent =
+      "✓ E-mail copiado com sucesso";
+  }).catch(() => {
+    document.getElementById("status").textContent =
+      "Copie manualmente: " + emailAtual;
+  });
+}
 </script>
 
 </body>
