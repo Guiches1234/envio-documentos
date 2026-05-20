@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Envio de Documentos</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    text-align:center;
+    padding:40px;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    font-size:18px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Envio de Documentos</h1>
+
+<p><strong>João Costa</strong></p>
+
+<p id="email">
+joao.costa@detran.ce.gov.br
+</p>
+
+<button onclick="copiarEmail()">
+Copiar E-mail
+</button>
+
+<button onclick="abrirEmail()">
+Enviar Documento
+</button>
+
+</div>
+
+<script>
+
+function copiarEmail(){
+    navigator.clipboard.writeText(
+        "joao.costa@detran.ce.gov.br"
+    );
+    alert("E-mail copiado!");
+}
+
+function abrirEmail(){
+    window.location.href =
+    "mailto:joao.costa@detran.ce.gov.br?subject=Documentação";
+}
+
+</script>
+
+</body>
+</html>
